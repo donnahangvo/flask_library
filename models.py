@@ -55,34 +55,38 @@ class User(db.Model, UserMixin):
 
 # class for adding information to database (make sure to make changes in api during setup)
 
-class Contact(db.Model):
+class Book(db.Model):
     id = db.Column(db.String, primary_key = True)
     first_name = db.Column(db.String(150), nullable = False)
     last_name = db.Column(db.String(150), nullable = False)
-    email = db.Column(db.String(200))
-    phone_number = db.Column(db.String(20))
-    address = db.Column(db.String(200))
+    book_title = db.Column(db.String(200))
+    book_length = db.Column(db.String(20))
+    book_type = db.Column(db.String(20))
+    language = db.Column(db.String(20))
+    isbn = db.Column(db.String(200))
     user_token = db.Column(db.String, db.ForeignKey('user.token'), nullable = False)
 
-    def __init__(self, first_name, last_name, email, phone_number, address, user_token, id = ''):
+    def __init__(self, first_name, last_name, book_title, book_length, book_type, language, isbn, user_token, id = ''):
         self.id = self.set_id()
         self.first_name = first_name
         self.last_name = last_name
-        self.email = email
-        self.phone_number = phone_number
-        self.address = address
+        self.book_title = book_title
+        self.book_length = book_length
+        self.book_type = book_type
+        self.language = language
+        self.isbn = isbn
         self.user_token = user_token
 
 
     def __repr__(self):
-        return f'The following contact has been added to the guestlist: {self.first_name + self.last_name}'
+        return f'The following book has been added to the library: {self.book_title}'
 
     def set_id(self):
         return (secrets.token_urlsafe())
 
-class ContactSchema(ma.Schema):
+class BookSchema(ma.Schema):
     class Meta:
-        fields = ['id','first_name','last_name','email','phone_number', 'address']
+        fields = ['id','first_name','last_name','book_title','book_length', 'book_type', 'language', 'isbn']
 
-contact_schema = ContactSchema()
-contacts_schema = ContactSchema(many=True)
+book_schema = BookSchema()
+books_schema = BookSchema(many=True)

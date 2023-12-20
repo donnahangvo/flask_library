@@ -18,11 +18,10 @@ def signup():
             print(email, password)
 
             user = User(email, password = password)
+            print(user)
 
             db.session.add(user)
             db.session.commit()
-
-
 
             flash(f'You have successfully created a user account {email}', 'User-created')
             return redirect(url_for('site.home'))
@@ -46,9 +45,10 @@ def signin():
 
             logged_user = User.query.filter(User.email == email).first()
             if logged_user and check_password_hash(logged_user.password, password):
+                print(logged_user)
                 login_user(logged_user)
                 flash('Welcome to your Event Planning Portal', 'auth-sucess')
-                return redirect(url_for('site.profile'))
+                return redirect(url_for('site.profile', user = logged_user))
             else:
                 flash('You have failed in your attempt to access this content', 'auth-failed')
                 return redirect(url_for('auth.signin'))
